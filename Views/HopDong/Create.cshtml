@@ -1,0 +1,71 @@
+﻿@model QLNS.Model.Hopdong
+
+<h4>Hopdong</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form id="frmHopDong" asp-action="Create" asp-controller="HopDong" method="POST">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Sohopdong" class="control-label"></label>
+                <input asp-for="Sohopdong" name="Sohopdong" class="form-control" />
+                <span asp-validation-for="Sohopdong" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ten" class="control-label"></label>
+                <input asp-for="Ten" name="Ten" class="form-control" />
+                <span asp-validation-for="Ten" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Noidung" class="control-label"></label>
+                <input asp-for="Noidung" name="Noidung" class="form-control" />
+                <span asp-validation-for="Noidung" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                    <label asp-for="Ngaylap" class="control-label"></label>
+                    <input asp-for="Ngaylap" class="form-control" />
+                    <span asp-validation-for="Ngaylap" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Useradd" class="control-label"></label>
+                    <input asp-for="Useradd" class="form-control" />
+                    <span asp-validation-for="Useradd" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Dateedit" class="control-label"></label>
+                    <input asp-for="Dateedit" class="form-control" />
+                    <span asp-validation-for="Dateedit" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Useredit" class="control-label"></label>
+                    <input asp-for="Useredit" class="form-control" />
+                    <span asp-validation-for="Useredit" class="text-danger"></span>
+                </div>*@
+            <div class="form-group">
+                <button id="Submit" onclick="Submit()" class="btn btn-default" >Submit </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+    function Submit() {
+        alert("call");
+            $.ajax({
+                    url: '@Url.Action("", "HopDong")',
+                data: $('#frmHopDong').serialize(),
+                type: 'POST',
+                    success: function (result) {
+                        alert(result);
+                    }
+                });
+
+    }
+    </script>
