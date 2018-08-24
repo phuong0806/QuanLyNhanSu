@@ -12,7 +12,6 @@ namespace QLNS.Data.Repository
     {
         public async Task Create(ChitietDaotao entity)
         {
-
             var dynamicParameters = new DynamicParameters();
             dynamicParameters.Add("@ten", entity.Ten);
             dynamicParameters.Add("@batdau", entity.Batdau);

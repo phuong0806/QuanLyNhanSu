@@ -1,4 +1,5 @@
-﻿using QLNS.Data.Interface;
+﻿using Dapper;
+using QLNS.Data.Interface;
 using QLNS.Model;
 using System;
 using System.Collections.Generic;
@@ -9,29 +10,46 @@ namespace QLNS.Data.Repository
 {
     public class DonViRepository : Repository<Donvi>, IDonViRepository
     {
-        public Task Create(Donvi entity)
+        public async Task Create(Donvi entity)
         {
-            throw new NotImplementedException();
+            var dynamicParameters = new DynamicParameters();
+            dynamicParameters.Add("@ten", entity.Ten);
+            dynamicParameters.Add("@dateadd", DateTime.Now);
+            dynamicParameters.Add("@useradd", 1);
+
+            await QueryFirstOrDefault("usp_DonViInsert", dynamicParameters);
+        }
+        public async Task Delete(int? id)
+        {
+            var dynamicParameters = new DynamicParameters();
+
+            dynamicParameters.Add("@id", id);
+
+            await Execute("usp_DonViDelete", dynamicParameters);
         }
 
-        public Task Delete(int? id)
+        public async Task<IEnumerable<Donvi>> getAll()
         {
-            throw new NotImplementedException();
+            return await Query("usp_DonViGetAll");
         }
 
-        public Task<IEnumerable<Donvi>> getAll()
+        public async Task<Donvi> getById(int? id)
         {
-            throw new NotImplementedException();
+            var dynamicParameters = new DynamicParameters();
+
+            dynamicParameters.Add("@id", id);
+
+            return await QueryFirstOrDefault("usp_DonViGet", dynamicParameters);
         }
 
-        public Task<Donvi> getById(int? id)
+        public async Task Update(Donvi entity)
         {
-            throw new NotImplementedException();
-        }
+            var dynamicParameters = new DynamicParameters();
+            dynamicParameters.Add("@ten", entity.Id);
+            dynamicParameters.Add("@dateedit", DateTime.Now);
+            dynamicParameters.Add("@useredit", 1);
 
-        public Task Update(Donvi entity)
-        {
-            throw new NotImplementedException();
+            await Execute("usp_DonViUpdate", dynamicParameters);
         }
     }
 }

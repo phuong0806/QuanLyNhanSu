@@ -1,4 +1,5 @@
-﻿using QLNS.Data.Interface;
+﻿using Dapper;
+using QLNS.Data.Interface;
 using QLNS.Model;
 using System;
 using System.Collections.Generic;
@@ -7,31 +8,53 @@ using System.Threading.Tasks;
 
 namespace QLNS.Data.Repository
 {
-    public class ChucVuRepository : Repository<ChucVuRepository>, IChucVuRepository
+    public class ChucVuRepository : Repository<Chucvu>, IChucVuRepository
     {
-        public Task Create(Chucvu entity)
+        public async Task Create(Chucvu entity)
         {
-            throw new NotImplementedException();
+            var dynamicParameters = new DynamicParameters();
+            dynamicParameters.Add("@ten", entity.Ten);
+            dynamicParameters.Add("@phucap", entity.Phucap);
+            dynamicParameters.Add("@mota", entity.Mota);
+            dynamicParameters.Add("@dateadd", DateTime.Now);
+            dynamicParameters.Add("@useradd", 1);
+
+            await QueryFirstOrDefault("usp_ChucVuInsert", dynamicParameters);
+        }
+        public async Task Delete(int? id)
+        {
+            var dynamicParameters = new DynamicParameters();
+
+            dynamicParameters.Add("@id", id);
+
+            await Execute("usp_ChucVuDelete", dynamicParameters);
         }
 
-        public Task Delete(int? id)
+        public async Task<IEnumerable<Chucvu>> getAll()
         {
-            throw new NotImplementedException();
+            return await Query("usp_ChucVuGetAll");
         }
 
-        public Task<IEnumerable<Chucvu>> getAll()
+        public async Task<Chucvu> getById(int? id)
         {
-            throw new NotImplementedException();
+            var dynamicParameters = new DynamicParameters();
+
+            dynamicParameters.Add("@id", id);
+
+            return await QueryFirstOrDefault("usp_ChucVuGet", dynamicParameters);
         }
 
-        public Task<Chucvu> getById(int? id)
+        public async Task Update(Chucvu entity)
         {
-            throw new NotImplementedException();
-        }
+            var dynamicParameters = new DynamicParameters();
+            dynamicParameters.Add("@id", entity.Id);
+            dynamicParameters.Add("@ten", entity.Ten);
+            dynamicParameters.Add("@phucap", entity.Phucap);
+            dynamicParameters.Add("@mota", entity.Mota);
+            dynamicParameters.Add("@dateedit", DateTime.Now);
+            dynamicParameters.Add("@useredit", 1);
 
-        public Task Update(Chucvu entity)
-        {
-            throw new NotImplementedException();
+            await Execute("usp_ChucVuUpdate", dynamicParameters);
         }
     }
 }

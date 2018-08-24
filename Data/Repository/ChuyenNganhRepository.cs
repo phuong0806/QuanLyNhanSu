@@ -1,4 +1,5 @@
-﻿using QLNS.Data.Interface;
+﻿using Dapper;
+using QLNS.Data.Interface;
 using QLNS.Model;
 using System;
 using System.Collections.Generic;
@@ -9,29 +10,45 @@ namespace QLNS.Data.Repository
 {
     public class ChuyenNganhRepository : Repository<Chuyennganh>, IChuyenNganhRepository
     {
-        public Task Create(Chuyennganh entity)
+        public async Task Create(Chuyennganh entity)
         {
-            throw new NotImplementedException();
+            var dynamicParameters = new DynamicParameters();
+            dynamicParameters.Add("@ten", entity.Ten);
+            dynamicParameters.Add("@dateadd", DateTime.Now);
+            dynamicParameters.Add("@useradd", 1);
+
+            await QueryFirstOrDefault("usp_ChuyenNganhInsert", dynamicParameters);
+        }
+        public async Task Delete(int? id)
+        {
+            var dynamicParameters = new DynamicParameters();
+
+            dynamicParameters.Add("@id", id);
+
+            await Execute("usp_ChuyenNganhDelete", dynamicParameters);
         }
 
-        public Task Delete(int? id)
+        public async Task<IEnumerable<Chuyennganh>> getAll()
         {
-            throw new NotImplementedException();
+            return await Query("usp_ChuyenNganhGetAll");
         }
 
-        public Task<IEnumerable<Chuyennganh>> getAll()
+        public async Task<Chuyennganh> getById(int? id)
         {
-            throw new NotImplementedException();
+            var dynamicParameters = new DynamicParameters();
+
+            dynamicParameters.Add("@id", id);
+
+            return await QueryFirstOrDefault("usp_ChuyenNganhGet", dynamicParameters);
         }
 
-        public Task<Chuyennganh> getById(int? id)
+        public async Task Update(Chuyennganh entity)
         {
-            throw new NotImplementedException();
-        }
+            var dynamicParameters = new DynamicParameters();
+            dynamicParameters.Add("@ten", entity.Id);
+            dynamicParameters.Add("@useredit", 1);
 
-        public Task Update(Chuyennganh entity)
-        {
-            throw new NotImplementedException();
+            await Execute("usp_ChuyenNganhUpdate", dynamicParameters);
         }
     }
 }

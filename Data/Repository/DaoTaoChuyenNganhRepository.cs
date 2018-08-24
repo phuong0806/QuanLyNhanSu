@@ -1,4 +1,5 @@
-﻿using QLNS.Data.Interface;
+﻿using Dapper;
+using QLNS.Data.Interface;
 using QLNS.Model;
 using System;
 using System.Collections.Generic;
@@ -9,29 +10,59 @@ namespace QLNS.Data.Repository
 {
     public class DaoTaoChuyenNganhRepository : Repository<Daotaochuyennganh>, IDaoTaoChuyenNganhRepository
     {
-        public Task Create(Daotaochuyennganh entity)
+        public async Task Create(Daotaochuyennganh entity)
         {
-            throw new NotImplementedException();
+            var dynamicParameters = new DynamicParameters();
+            dynamicParameters.Add("@ten", entity.Id);
+            dynamicParameters.Add("@ten", entity.Ten);
+            dynamicParameters.Add("@batdau", entity.Batdau);
+            dynamicParameters.Add("@ketthuc", entity.Ketthuc);
+            dynamicParameters.Add("@id_chucvu", entity.IdChucvu);
+            dynamicParameters.Add("@id_chuyennganh", entity.IdChuyennganh);
+            dynamicParameters.Add("@id_phongban", entity.IdPhongban);
+            dynamicParameters.Add("@dateadd", DateTime.Now);
+            dynamicParameters.Add("@useradd", 1);
+
+            await QueryFirstOrDefault("usp_DaoTaoChuyenNganhInsert", dynamicParameters);
+        }
+        public async Task Delete(int? id)
+        {
+            var dynamicParameters = new DynamicParameters();
+
+            dynamicParameters.Add("@id", id);
+
+            await Execute("usp_DaoTaoChuyenNganhDelete", dynamicParameters);
         }
 
-        public Task Delete(int? id)
+        public async Task<IEnumerable<Daotaochuyennganh>> getAll()
         {
-            throw new NotImplementedException();
+            return await Query("usp_DaoTaoChuyenNganhGetAll");
         }
 
-        public Task<IEnumerable<Daotaochuyennganh>> getAll()
+        public async Task<Daotaochuyennganh> getById(int? id)
         {
-            throw new NotImplementedException();
+            var dynamicParameters = new DynamicParameters();
+
+            dynamicParameters.Add("@id", id);
+
+            return await QueryFirstOrDefault("usp_DaoTaoChuyenNganhGet", dynamicParameters);
         }
 
-        public Task<Daotaochuyennganh> getById(int? id)
+        public async Task Update(Daotaochuyennganh entity)
         {
-            throw new NotImplementedException();
-        }
+            var dynamicParameters = new DynamicParameters();
+            dynamicParameters.Add("@id", entity.Id);
+            dynamicParameters.Add("@ten", entity.Id);
+            dynamicParameters.Add("@ten", entity.Ten);
+            dynamicParameters.Add("@batdau", entity.Batdau);
+            dynamicParameters.Add("@ketthuc", entity.Ketthuc);
+            dynamicParameters.Add("@id_chucvu", entity.IdChucvu);
+            dynamicParameters.Add("@id_chuyennganh", entity.IdChuyennganh);
+            dynamicParameters.Add("@id_phongban", entity.IdPhongban);
+            dynamicParameters.Add("@dateedit", DateTime.Now);
+            dynamicParameters.Add("@useredit", 1);
 
-        public Task Update(Daotaochuyennganh entity)
-        {
-            throw new NotImplementedException();
+            await Execute("usp_DaoTaoChuyenNganhUpdate", dynamicParameters);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using QLNS.Data.Interface;
+﻿using Dapper;
+using QLNS.Data.Interface;
 using QLNS.Model;
 using System;
 using System.Collections.Generic;
@@ -9,29 +10,53 @@ namespace QLNS.Data.Repository
 {
     public class ThanNhanRepository : Repository<Thannhan>, IThanNhanRepository
     {
-        public Task Create(Thannhan entity)
+        public async Task Create(Thannhan entity)
         {
-            throw new NotImplementedException();
+            var dynamicParameters = new DynamicParameters();
+            dynamicParameters.Add("@ten", entity.Id);
+            dynamicParameters.Add("@ngaysinh", entity.Ngaysinh);
+            dynamicParameters.Add("@nghenghiep", entity.Nghenghiep);
+            dynamicParameters.Add("@id_nhanvien", entity.IdNhanvien);
+            dynamicParameters.Add("@dateadd", DateTime.Now);
+            dynamicParameters.Add("@useradd", 1);
+
+            await QueryFirstOrDefault("usp_ThanNhanInsert", dynamicParameters);
+        }
+        public async Task Delete(int? id)
+        {
+            var dynamicParameters = new DynamicParameters();
+
+            dynamicParameters.Add("@id", id);
+
+            await Execute("usp_ThanNhanDelete", dynamicParameters);
         }
 
-        public Task Delete(int? id)
+        public async Task<IEnumerable<Thannhan>> getAll()
         {
-            throw new NotImplementedException();
+            return await Query("usp_ThanNhanGetAll");
         }
 
-        public Task<IEnumerable<Thannhan>> getAll()
+        public async Task<Thannhan> getById(int? id)
         {
-            throw new NotImplementedException();
+            var dynamicParameters = new DynamicParameters();
+
+            dynamicParameters.Add("@id", id);
+
+            return await QueryFirstOrDefault("usp_ThanNhanGet", dynamicParameters);
         }
 
-        public Task<Thannhan> getById(int? id)
+        public async Task Update(Thannhan entity)
         {
-            throw new NotImplementedException();
-        }
+            var dynamicParameters = new DynamicParameters();
+            dynamicParameters.Add("@id", entity.Id);
+            dynamicParameters.Add("@ten", entity.Id);
+            dynamicParameters.Add("@ngaysinh", entity.Ngaysinh);
+            dynamicParameters.Add("@nghenghiep", entity.Nghenghiep);
+            dynamicParameters.Add("@id_nhanvien", entity.IdNhanvien);
+            dynamicParameters.Add("@dateedit", DateTime.Now);
+            dynamicParameters.Add("@useredit", 1);
 
-        public Task Update(Thannhan entity)
-        {
-            throw new NotImplementedException();
+            await Execute("usp_ThanNhanUpdate", dynamicParameters);
         }
     }
 }
