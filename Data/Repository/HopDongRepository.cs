@@ -12,7 +12,7 @@ namespace QLNS.Data.Repository
 {
     public class HopDongRepository : IHopDongRepository
     {
-        private readonly string connectionString = @"Data Source=.;Initial Catalog=QLNS;Integrated Security=True";
+        private readonly string connectionString = @"Data Source=DESKTOP-62473AB\SQLEXPRESS;Initial Catalog=QLNS;Integrated Security=True";
 
         private SqlConnection sqlConnection;
 
@@ -29,7 +29,7 @@ namespace QLNS.Data.Repository
                 dynamicParameters.Add("@noidung", entity.Noidung);
                 dynamicParameters.Add("@ngaylap", entity.Ngaylap);
                 dynamicParameters.Add("@dateadd", DateTime.Now);
-                dynamicParameters.Add("@useradd", entity.Useradd);
+                dynamicParameters.Add("@useradd",entity.Useradd);
                 await sqlConnection.ExecuteAsync(
                     "usp_HopDongInsert",
                     dynamicParameters,
@@ -98,8 +98,8 @@ namespace QLNS.Data.Repository
                 dynamicParameters.Add("@ten", entity.Ten);
                 dynamicParameters.Add("@noidung", entity.Noidung);
                 dynamicParameters.Add("@ngaylap", entity.Ngaylap);
-                dynamicParameters.Add("@dateedit", entity.Dateedit);
-                dynamicParameters.Add("@useredit", entity.Useredit);
+                dynamicParameters.Add("@dateedit", DateTime.Now);
+                dynamicParameters.Add("@useredit", 1);
 
                 await sqlConnection.ExecuteAsync(
                     "usp_HopDongUpdate",
@@ -107,7 +107,6 @@ namespace QLNS.Data.Repository
                     commandType: CommandType.StoredProcedure);
             }
         }
-
 
     }
 }

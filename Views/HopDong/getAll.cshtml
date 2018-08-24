@@ -1,0 +1,78 @@
+﻿@model IEnumerable<QLNS.Model.Hopdong>
+
+@{
+    ViewData["Title"] = "getAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>getAll</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Sohopdong)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Ten)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Noidung)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Ngaylap)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Dateadd)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Useradd)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Dateedit)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Useredit)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sohopdong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ten)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Noidung)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ngaylap)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dateadd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Useradd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dateedit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Useredit)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

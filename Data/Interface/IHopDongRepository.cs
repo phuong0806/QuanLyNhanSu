@@ -8,5 +8,7 @@ namespace QLNS.Data.Interface
 {
     public interface IHopDongRepository : IRepository<Hopdong>
     {
+        Task Update( Hopdong hopdong);
+        Task Create(Hopdong hopdong);
     }
 }

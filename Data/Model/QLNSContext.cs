@@ -40,7 +40,7 @@ namespace QLNS.Model
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=QLNS;Integrated Security=True");
+                optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-62473AB\SQLEXPRESS;Initial Catalog=QLNS;Integrated Security=True");
             }
         }
 

@@ -1,87 +1,249 @@
-﻿@model IEnumerable<QLNS.Model.Hopdong>
-
+﻿
 @{
-    ViewData["Title"] = "Index";
-}
+                ViewData["Title"] = "Index";
+                Layout = null; }
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>To-do CRUD</title>
+    <style>
+        input[type='submit'], button, [aria-label] {
+            cursor: pointer;
+        }
 
-<h2>Index</h2>
+#spoiler {
+        display: none;
+        }
 
-<p>
+    table {
+            font-family: Arial, sans-serif;
+            border: 1px solid;
+    border-collapse: collapse;
+        }
 
-    @*<a asp-action="Create">Create nè </a>*@
-    @Html.ActionLink("Create nè", "Create", "HopDong")
-</p>
-<table class="table">
-    <thead>
+        th {
+            background-color: #0066CC;
+            color: white;
+        }
+
+        td {
+            border: 1px solid;
+    padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>To-do CRUD</h1>
+    <h3>Add</h3>
+    <form action="javascript:void(0);" method="POST" onsubmit="addItem()">
+
+        <input type="text" id="add-SHD" placeholder="SHD">
+        <input type="text" id="add-Ten" placeholder="Ten">
+        <input type="text" id="add-ND" placeholder="ND">
+        <input type="datetime" id="add-NL">
+
+        <input type="text" id="add-UA" placeholder="UE">
+        <input type="submit" value="Add">
+    </form>
+
+    <div id="spoiler">
+        <h3>Edit</h3>
+        <form class="my-form">
+            <input type="text" id="edit-id" placeholder="id">
+            <input type="text" id="edit-SHD" placeholder="SHD">
+            <input type="text" id="edit-Ten" placeholder="Ten">
+            <input type="text" id="edit-ND" placeholder="ND">
+            <input type="date" id="edit-NL" placeholder="NL">
+            <input type="date" id="edit-DE" placeholder="DE">
+            <input type="text" id="edit-UE" placeholder="UE">
+            <input type="submit" value="Edit">
+            <a onclick="closeInput()" aria-label="Close">&#10006;</a>
+        </form>
+    </div>
+
+    <p id="counter"></p>
+
+    <table>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Id)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Sohopdong)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Ten)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Noidung)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Ngaylap)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Dateadd)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Useradd)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Dateedit)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Useredit)
-                </th>
+            <th>Is Complete</th>
+            <th>Name</th>
+            <th></th>
             <th></th>
         </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Sohopdong)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ten)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Noidung)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ngaylap)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Dateadd)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Useradd)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Dateedit)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Useredit)
-            </td>
-            <td>
-               
-             
-                @Html.ActionLink("Edit", "Update", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Get", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+        <tbody id="todos"></tbody>
+    </table>
+
+
+    @section jsFooter{
+
+        <script>
+            const uri = 'http://localhost:64605/api/HopDong';
+            let todos = null;
+            function getCount(data) {
+                const el = $('#counter');
+                let name = 'to-do';
+                if (data) {
+                    if (data > 1) {
+                        name = 'to-dos';
+                    }
+                    el.text(data + ' ' + name);
+                } else {
+                    el.html('No ' + name);
+                }
+            }
+
+            $(document).ready(function () {
+                getData();
+            });
+
+            function getData() {
+                $.ajax({
+                    type: 'GET',
+                    url: uri,
+                    success: function (data) {
+                        $('#todos').empty();
+                        getCount(data.length);
+                        $.each(data, function (key, item) {
+                            const checked = item.isComplete ? 'checked' : '';
+
+                            $('<tr>' +
+                                '<td>' + item.id + '</td>' +
+                                '<td>' + item.sohopdong + '</td>' +
+                                '<td>' + item.ten + '</td>' +
+                                '<td>' + item.noidung + '</td>' +
+                                '<td>' + item.ngaylap + '</td>' +
+                                '<td>' + item.dateedit + '</td>' +
+                                '<td>' + item.useredit + '</td>' +
+                                '<td><button onclick="editItem(' + item.id + ')">Edit</button></td>' +
+                                '<td><button onclick="getDataDetail(' + item.id + ')">Detail</button></td>' +
+                                '<td><button onclick="deleteItem(' + item.id + ')">Delete</button></td>' +
+                                '</tr>').appendTo($('#todos'));
+                        });
+
+                        todos = data;
+                    }
+                });
+            }
+            function getDataDetail(id) {
+
+                $.ajax({
+                    type: 'GET',
+                    url: uri + '/' + id,
+                    dataType: 'json',
+                    ContentType: "application/json",
+                    crossDomain: true,
+                    success: function (data) {
+                        $('#todos').empty();
+
+
+                        $('<tr>' +
+                            '<td>' + data.id + '</td>' +
+                            '<td>' + data.sohopdong + '</td>' +
+                            '<td>' + data.ten + '</td>' +
+                            '<td>' + data.noidung + '</td>' +
+                            '<td>' + data.ngaylap + '</td>' +
+                            '<td>' + data.dateedit + '</td>' +
+                            '<td>' + data.useredit + '</td>' +
+                               '</tr>').appendTo($('#todos'));
+
+
+                        todos = data;
+                    }
+                });
+            }
+
+            function addItem() {
+                const item = {
+
+                    'sohopdong': $('#add-SHD').val(),
+                    'ten': $('#add-Ten').val(),
+                    'noidung': $('#add-ND').val(),
+                    'ngaylap': $('#add-NL').val(),
+
+                    'useradd': $('#add-UA').val()
+                    //'isComplete': false
+                };
+                $.ajax({
+                    type: 'POST',
+                    url: uri+'/Add',
+                    dataType: 'json',
+                    crossDomain: true,
+                    contentType: "application/json",
+                    data: JSON.stringify(item),
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert("err");
+                    },
+                    success: function (result) {
+                        alert("ok");
+                        //getData();
+                    },
+                });
+            }
+
+            function deleteItem(id) {
+                $.ajax({
+                    url: uri + '/' + id,
+                    type: 'POST',
+                    dataType: 'json',
+                    ContentType: "application/json",
+                    crossDomain: true,
+                    success: function () {
+                        getData();
+                    }
+                });
+            }
+
+            function editItem(id) {
+
+                $.each(todos, function (item) {
+                    alert(item.noidung);
+                    if (item.id === id) {
+
+                        $('#edit-id').val(item.id);
+                        $('#edit-SHD').val(item.sohopdong);
+                        $('#edit-Ten').val(item.ten);
+                        $('#edit-ND').val(item.noidung);
+                        $('#edit-NL').val(item.ngaylap);
+                        $('#edit-DE').val(item.dateedit);
+                        $('#edit-UE').val(item.useredit);
+                    }
+                });
+                $('#spoiler').css({ 'display': 'block' });
+            }
+
+            $('.my-form').on('submit', function () {
+
+                const item = {
+                    'id': $('#edit-id').val(),
+                    'sohopdong': $('#edit-SHD').val(),
+                    'ten': $('#edit-Ten').val(),
+                    'noidung': $('#edit-ND').val(),
+                    'ngaylap': $('#edit-NL').val(),
+                    'dateedit': $('#edit-DE').val(),
+                    'useredit': $('#edit-UE').val()
+
+                };
+
+                $.ajax({
+                    url: uri + '/' + $('#edit-id').val(),
+                    type: 'POST',
+                    accepts: 'application/json',
+                    contentType: 'application/json',
+                    data: JSON.stringify(item),
+                    success: function () {
+                        getData();
+                    }
+                });
+
+                closeInput();
+                return false;
+            });
+
+            function closeInput() {
+                $('#spoiler').css({ 'display': 'none' });
+            }
+        </script>
+    }
+</body>
+</html>
