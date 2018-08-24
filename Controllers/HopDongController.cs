@@ -29,42 +29,42 @@ namespace QLNS.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int? id)
         {
-            var HopDong = await hopDongRepository.getById(id);
+            var model = await hopDongRepository.getById(id);
 
-            if (HopDong == null)
+            if (model == null)
             {
                 return NotFound(); 
             }
 
-            return Ok(HopDong);
+            return Ok(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody]Hopdong hopdong)
+        public async Task<IActionResult> Create([FromBody]Hopdong model)
         {
-            if (hopdong == null)
+            if (model == null)
             {
                 return BadRequest();
             }
 
-            await hopDongRepository.Create(hopdong);
+            await hopDongRepository.Create(model);
 
-            return Ok(hopdong); 
+            return Ok(model); 
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id,[FromBody]Hopdong hopdong)
+        public async Task<IActionResult> Update(int id,[FromBody]Hopdong model)
         {
-            if (id != hopdong.Id)
+            if (id != model.Id)
             {
                 return BadRequest();
             }
 
-            hopdong.Id = id;
+            model.Id = id;
 
-            await hopDongRepository.Update(hopdong);
+            await hopDongRepository.Update(model);
 
-            return Ok(hopdong);
+            return Ok(model);
 
         }
 
@@ -76,7 +76,7 @@ namespace QLNS.Controllers
                 return NotFound(); 
             }
 
-            await this.hopDongRepository.Delete(id);
+            await hopDongRepository.Delete(id);
 
             return new NoContentResult(); 
         }

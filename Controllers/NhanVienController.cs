@@ -10,21 +10,20 @@ using QLNS.Model;
 namespace QLNS.Controllers
 {
     [Produces("application/json")]
-    [Route("api/ChiTietDaoTao")]
-    public class ChiTietDaoTaoController : Controller
+    [Route("api/NhanVien")]
+    public class NhanVienController : Controller
     {
-        private IChiTietDaoTapRepository chiTietDaoTaoRepository;
+        private INhanVienRepository nhanVienRepository;
 
-        public ChiTietDaoTaoController(IChiTietDaoTapRepository chiTietDaoTaoRepository)
+        public NhanVienController(INhanVienRepository nhanVienRepository)
         {
-            this.chiTietDaoTaoRepository = chiTietDaoTaoRepository;
+            this.nhanVienRepository = nhanVienRepository;
         }
 
-        // GET: HopDong
         [HttpGet]
-        public async Task<IEnumerable<ChitietDaotao>> getAll()
+        public async Task<IEnumerable<Nhanvien>> getAll()
         {
-            var list = await chiTietDaoTaoRepository.getAll();
+            var list = await nhanVienRepository.getAll();
             return list;
         }
 
@@ -32,7 +31,7 @@ namespace QLNS.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int? id)
         {
-            var model = await chiTietDaoTaoRepository.getById(id);
+            var model = await nhanVienRepository.getById(id);
 
             if (model == null)
             {
@@ -43,20 +42,20 @@ namespace QLNS.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody]ChitietDaotao model)
+        public async Task<IActionResult> Create([FromBody]Nhanvien model)
         {
             if (model == null)
             {
                 return BadRequest();
             }
 
-            await chiTietDaoTaoRepository.Create(model);
+            await nhanVienRepository.Create(model);
 
             return Ok(model);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody]ChitietDaotao model)
+        public async Task<IActionResult> Update(int id, [FromBody]Nhanvien model)
         {
             if (id != model.Id)
             {
@@ -65,7 +64,7 @@ namespace QLNS.Controllers
 
             model.Id = id;
 
-            await chiTietDaoTaoRepository.Update(model);
+            await nhanVienRepository.Update(model);
 
             return Ok(model);
 
@@ -79,7 +78,7 @@ namespace QLNS.Controllers
                 return NotFound();
             }
 
-            await chiTietDaoTaoRepository.Delete(id);
+            await nhanVienRepository.Delete(id);
 
             return new NoContentResult();
         }

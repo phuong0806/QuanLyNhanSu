@@ -10,21 +10,21 @@ using QLNS.Model;
 namespace QLNS.Controllers
 {
     [Produces("application/json")]
-    [Route("api/ChiTietDaoTao")]
-    public class ChiTietDaoTaoController : Controller
+    [Route("api/ChuyenNganh")]
+    public class ChuyenNganhController : Controller
     {
-        private IChiTietDaoTapRepository chiTietDaoTaoRepository;
+        private IChuyenNganhRepository chuyenNganhRepository;
 
-        public ChiTietDaoTaoController(IChiTietDaoTapRepository chiTietDaoTaoRepository)
+        public ChuyenNganhController(IChuyenNganhRepository chuyenNganhRepository)
         {
-            this.chiTietDaoTaoRepository = chiTietDaoTaoRepository;
+            this.chuyenNganhRepository = chuyenNganhRepository;
         }
 
         // GET: HopDong
         [HttpGet]
-        public async Task<IEnumerable<ChitietDaotao>> getAll()
+        public async Task<IEnumerable<Chuyennganh>> getAll()
         {
-            var list = await chiTietDaoTaoRepository.getAll();
+            var list = await chuyenNganhRepository.getAll();
             return list;
         }
 
@@ -32,7 +32,7 @@ namespace QLNS.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int? id)
         {
-            var model = await chiTietDaoTaoRepository.getById(id);
+            var model = await chuyenNganhRepository.getById(id);
 
             if (model == null)
             {
@@ -43,20 +43,20 @@ namespace QLNS.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody]ChitietDaotao model)
+        public async Task<IActionResult> Create([FromBody]Chuyennganh model)
         {
             if (model == null)
             {
                 return BadRequest();
             }
 
-            await chiTietDaoTaoRepository.Create(model);
+            await chuyenNganhRepository.Create(model);
 
             return Ok(model);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody]ChitietDaotao model)
+        public async Task<IActionResult> Update(int id, [FromBody]Chuyennganh model)
         {
             if (id != model.Id)
             {
@@ -65,7 +65,7 @@ namespace QLNS.Controllers
 
             model.Id = id;
 
-            await chiTietDaoTaoRepository.Update(model);
+            await chuyenNganhRepository.Update(model);
 
             return Ok(model);
 
@@ -79,7 +79,7 @@ namespace QLNS.Controllers
                 return NotFound();
             }
 
-            await chiTietDaoTaoRepository.Delete(id);
+            await chuyenNganhRepository.Delete(id);
 
             return new NoContentResult();
         }
