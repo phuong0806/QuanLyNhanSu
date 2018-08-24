@@ -42,7 +42,7 @@ namespace QLNS.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody]Loaidaotao model)
+        public async Task<IActionResult> Create([FromBody]LoaiDaotao model)
         {
             if (model == null)
             {
@@ -55,7 +55,7 @@ namespace QLNS.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody]Loaidaotao model)
+        public async Task<IActionResult> Update(int id, [FromBody]LoaiDaotao model)
         {
             if (id != model.Id)
             {

@@ -16,7 +16,7 @@ namespace QLNS.Data.Repository
             dynamicParameters.Add("@ten", entity.Ten);
             dynamicParameters.Add("@noidung", entity.Noidung);
             dynamicParameters.Add("@ngaylap", entity.Ngaylap);
-            dynamicParameters.Add("@ngaycap", entity.Ngaycapnhat);
+            dynamicParameters.Add("@ngaycapnhat", entity.Ngaycapnhat);
             dynamicParameters.Add("@dateadd", DateTime.Now);
             dynamicParameters.Add("@useradd", 1);
 
@@ -52,7 +52,7 @@ namespace QLNS.Data.Repository
             dynamicParameters.Add("@ten", entity.Ten);
             dynamicParameters.Add("@noidung", entity.Noidung);
             dynamicParameters.Add("@ngaylap", entity.Ngaylap);
-            dynamicParameters.Add("@ngaycap", entity.Ngaycapnhat);
+            dynamicParameters.Add("@ngaycapnhat", entity.Ngaycapnhat);
             dynamicParameters.Add("@dateedit", DateTime.Now);
             dynamicParameters.Add("@useredit", 1);
 

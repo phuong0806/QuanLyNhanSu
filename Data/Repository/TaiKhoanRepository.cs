@@ -10,12 +10,8 @@ using System.Threading.Tasks;
 
 namespace QLNS.Data.Repository
 {
-    public class TaiKhoanRepository : ITaiKhoanRepository
+    public class TaiKhoanRepository : Repository<Taikhoan>, ITaiKhoanRepository
     {
-        private readonly string connectionString = "Data Source=.;Initial Catalog=QLNS;Integrated Security=True";
-
-        private SqlConnection sqlConnection;
-            
         public Task Create(Taikhoan entity)
         {
             throw new NotImplementedException();
@@ -38,20 +34,10 @@ namespace QLNS.Data.Repository
 
         public async Task<Taikhoan> getUser(string username, string password)
         {
-            using (var sqlConnection = new SqlConnection(connectionString))
-            {
-                await sqlConnection.OpenAsync();
-
                 var dynamicParameters = new DynamicParameters();
-
                 dynamicParameters.Add("@tendangnhap", username);
                 dynamicParameters.Add("@matkhau", password);
-
-                return await sqlConnection.QuerySingleOrDefaultAsync<Taikhoan>(
-                    "usp_TaiKhoanGet",
-                    dynamicParameters,
-                    commandType: CommandType.StoredProcedure);
-            }
+                return await QueryFirstOrDefault("usp_TaiKhoanGet", dynamicParameters);
         }
 
         public Task Update(Taikhoan entity)
