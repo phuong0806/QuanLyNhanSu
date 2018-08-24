@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using QLNS.Data.Interface;
 using QLNS.Model;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Dapper;
 
 namespace QLNS.Controllers
 {
-    [Route("api/[controller]")]
+    [Produces("application/json")]
+    [Route("api/HopDong")]
     public class HopDongController : Controller
     {
         private IHopDongRepository hopDongRepository;
@@ -34,10 +33,10 @@ namespace QLNS.Controllers
 
             if (HopDong == null)
             {
-                return NotFound(); // 404 - Các tài nguyên hiện tại không được tìm thấy
+                return NotFound(); 
             }
 
-            return Ok(HopDong); // 200 - Xử lý thành công và trả về đối tượng đã xử lý
+            return Ok(HopDong);
         }
 
         [HttpPost]
@@ -45,25 +44,27 @@ namespace QLNS.Controllers
         {
             if (hopdong == null)
             {
-                return BadRequest(); // 400 - Xử lý lỗi
+                return BadRequest();
             }
 
             await hopDongRepository.Create(hopdong);
 
-            return Ok(hopdong); // 200 - Xử lý thành công và trả về đối tượng đã xử lý
+            return Ok(hopdong); 
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update([FromBody]Hopdong hopdong)
+        public async Task<IActionResult> Update(int id,[FromBody]Hopdong hopdong)
         {
-            if (hopdong == null || hopdong.Id == 0)
+            if (id != hopdong.Id)
             {
-                return BadRequest(); // 400
+                return BadRequest();
             }
+
+            hopdong.Id = id;
 
             await hopDongRepository.Update(hopdong);
 
-            return Ok(hopdong); // 200 - Xử lý thành công và trả về đối tượng đã xử lý
+            return Ok(hopdong);
 
         }
 
@@ -72,12 +73,12 @@ namespace QLNS.Controllers
         {
             if (id == null || id < 1)
             {
-                return NotFound(); // 404 - 
+                return NotFound(); 
             }
 
             await this.hopDongRepository.Delete(id);
 
-            return new NoContentResult(); // 204 - Xử lý thành công nhưng không trả về g2
+            return new NoContentResult(); 
         }
     }
 }
