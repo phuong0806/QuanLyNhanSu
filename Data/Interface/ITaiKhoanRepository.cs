@@ -8,6 +8,7 @@ namespace QLNS.Data.Interface
 {
     public interface ITaiKhoanRepository : IRepository<Taikhoan>
     {
-        Task<Taikhoan> getUser(string username, string password);
+        Task<Taikhoan> Authenticate(string username, string password);
+        Task ChangeStatus(string username, string status, string reason);
     }
 }

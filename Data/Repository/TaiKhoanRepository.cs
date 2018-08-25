@@ -12,37 +12,69 @@ namespace QLNS.Data.Repository
 {
     public class TaiKhoanRepository : Repository<Taikhoan>, ITaiKhoanRepository
     {
-        public Task Create(Taikhoan entity)
+        public async Task<Taikhoan> Authenticate(string username, string password)
         {
-            throw new NotImplementedException();
+            var dynamicParameters = new DynamicParameters();
+            dynamicParameters.Add("@tendangnhap", username);
+            dynamicParameters.Add("@matkhau", password);
+            return await QueryFirstOrDefault("usp_TaiKhoanAuthenticate", dynamicParameters);
         }
 
-        public Task Delete(int? id)
+        public async Task Create(Taikhoan entity)
         {
-            throw new NotImplementedException();
+            var dynamicParameters = new DynamicParameters();
+            dynamicParameters.Add("@tendangnhap", entity.Taikhoan1);
+            dynamicParameters.Add("@matkhau", entity.Matkhau);
+            dynamicParameters.Add("@salt", entity.Salt);
+            dynamicParameters.Add("@khoa", entity.Khoa);
+            dynamicParameters.Add("@thoigian_mokhoa", null);
+            dynamicParameters.Add("@lydo_khoa", null);
+
+            await QueryFirstOrDefault("usp_TaiKhoanInsert", dynamicParameters);
+        }
+        public async Task Delete(int? id)
+        {
+            var dynamicParameters = new DynamicParameters();
+
+            dynamicParameters.Add("@id", id);
+
+            await Execute("usp_TaiKhoanDelete", dynamicParameters);
         }
 
-        public Task<IEnumerable<Taikhoan>> getAll()
+        public async Task<IEnumerable<Taikhoan>> getAll()
         {
-            throw new NotImplementedException();
+            return await Query("usp_TaiKhoanGetAll");
         }
 
-        public Task<Taikhoan> getById(int? id)
+        public async Task<Taikhoan> getById(int? id)
         {
-            throw new NotImplementedException();
+            var dynamicParameters = new DynamicParameters();
+
+            dynamicParameters.Add("@id", id);
+
+            return await QueryFirstOrDefault("usp_TaiKhoanGet", dynamicParameters);
         }
 
-        public async Task<Taikhoan> getUser(string username, string password)
+        public async Task Update(Taikhoan entity)
         {
-                var dynamicParameters = new DynamicParameters();
-                dynamicParameters.Add("@tendangnhap", username);
-                dynamicParameters.Add("@matkhau", password);
-                return await QueryFirstOrDefault("usp_TaiKhoanGet", dynamicParameters);
+            var dynamicParameters = new DynamicParameters();
+            dynamicParameters.Add("@id", entity.Id);
+            dynamicParameters.Add("@tendangnhap", entity.Taikhoan1);
+            dynamicParameters.Add("@matkhau", entity.Matkhau);
+            dynamicParameters.Add("@salt", entity.Salt);
+
+            await Execute("usp_TaiKhoanUpdate", dynamicParameters);
         }
 
-        public Task Update(Taikhoan entity)
+        public async Task ChangeStatus(string username, string status, string reason)
         {
-            throw new NotImplementedException();
+            var dynamicParameters = new DynamicParameters();
+
+            dynamicParameters.Add("@tendangnhap", username);
+            dynamicParameters.Add("@khoa", status);
+            dynamicParameters.Add("@lydo_khoa", reason);
+
+            await QueryFirstOrDefault("usp_TaiKhoanStatus", dynamicParameters);
         }
     }
 }
