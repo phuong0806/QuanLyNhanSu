@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace QLNS.Data.Interface
 {
-    public interface IHopDongRepository : IRepository<Hopdong>
+    public interface ILoaiDaoTaoRepository : IRepository<LoaiDaotao>
     {
-        //Task Update( Hopdong hopdong);
-        //Task Create(Hopdong hopdong);
     }
 }

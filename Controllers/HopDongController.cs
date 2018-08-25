@@ -1,16 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using QLNS.Data.Interface;
 using QLNS.Model;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dapper;
 using Microsoft.AspNetCore.Authorization;
 
+
 namespace QLNS.Controllers
 {
     [Produces("application/json")]
-    [Route("api/[controller]")]
+    [Route("api/HopDong")]
+
     public class HopDongController : Controller
     {
         private IHopDongRepository hopDongRepository;
@@ -36,28 +37,30 @@ namespace QLNS.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int? id)
         {
-            var HopDong = await hopDongRepository.getById(id);
+            var model = await hopDongRepository.getById(id);
 
-            if (HopDong == null)
+            if (model == null)
             {
-                return NotFound(); // 404 - Các tài nguyên hiện tại không được tìm thấy
+                return NotFound(); 
             }
 
-            return Ok(HopDong); // 200 - Xử lý thành công và trả về đối tượng đã xử lý
+            return Ok(model);
         }
        
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody]Hopdong hopdong)
+        public async Task<IActionResult> Create([FromBody]Hopdong model)
         {
-            //if (hopdong == null)
-            //{
-            //    return BadRequest(); // 400 - Xử lý lỗi
-            //}
 
-            await hopDongRepository.Create(hopdong);
+            if (model == null)
+            {
+                return BadRequest();
+            }
 
-            return Ok(hopdong); // 200 - Xử lý thành công và trả về đối tượng đã xử lý
+
+            await hopDongRepository.Create(model);
+
+            return Ok(model); 
         }
         //[Route("Update")]
         //[HttpPost]
@@ -77,18 +80,21 @@ namespace QLNS.Controllers
         /// 
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody]Hopdong hopdong)
+
+        
+        public async Task<IActionResult> Update(int id,[FromBody]Hopdong model)
         {
-            //if (id != hopdong.Id)
+            //if (id != model.Id)
             //{
             //    return BadRequest();
             //}
 
-            hopdong.Id = id;
 
-            await hopDongRepository.Update(hopdong);
+            model.Id = id;
 
-            return Ok(hopdong); // 200 - Xử lý thành công và trả về đối tượng đã xử lý
+            await hopDongRepository.Update(model);
+
+            return Ok(model);
 
         }
 
@@ -97,12 +103,16 @@ namespace QLNS.Controllers
         {
             if (id == null || id < 1)
             {
-                return NotFound(); // 404 - 
+                return NotFound(); 
             }
 
-            await this.hopDongRepository.Delete(id);
+            await hopDongRepository.Delete(id);
 
-            return Json("{\"code\":1}"); // 204 - Xử lý thành công nhưng không trả về g2
+
+           return Json("{\"code\":1}"); // 204 - Xử lý thành công nhưng không trả về g2
+
+           // return new NoContentResult(); 
+
         }
     }
 }

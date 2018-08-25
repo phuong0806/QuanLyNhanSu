@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace QLNS.Data.Interface
 {
-    public interface IHopDongRepository : IRepository<Hopdong>
+    public interface IChucVuRepository : IRepository<Chucvu>
     {
-        //Task Update( Hopdong hopdong);
-        //Task Create(Hopdong hopdong);
+
     }
 }

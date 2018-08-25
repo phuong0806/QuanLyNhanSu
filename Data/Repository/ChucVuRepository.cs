@@ -3,63 +3,58 @@ using QLNS.Data.Interface;
 using QLNS.Model;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace QLNS.Data.Repository
 {
-    public class HopDongRepository : Repository<Hopdong>, IHopDongRepository
+    public class ChucVuRepository : Repository<Chucvu>, IChucVuRepository
     {
-        public async Task Create(Hopdong entity)
+        public async Task Create(Chucvu entity)
         {
             var dynamicParameters = new DynamicParameters();
-            dynamicParameters.Add("@sohopdong", entity.Sohopdong);
             dynamicParameters.Add("@ten", entity.Ten);
-            dynamicParameters.Add("@noidung", entity.Noidung);
-            dynamicParameters.Add("@ngaylap", entity.Ngaylap);
+            dynamicParameters.Add("@phucap", entity.Phucap);
+            dynamicParameters.Add("@mota", entity.Mota);
             dynamicParameters.Add("@dateadd", DateTime.Now);
             dynamicParameters.Add("@useradd", 1);
 
-            await QueryFirstOrDefault("usp_HopDongInsert", dynamicParameters);
+            await QueryFirstOrDefault("usp_ChucVuInsert", dynamicParameters);
         }
-
         public async Task Delete(int? id)
         {
             var dynamicParameters = new DynamicParameters();
 
             dynamicParameters.Add("@id", id);
 
-            await Execute("usp_HopDongDelete", dynamicParameters);
+            await Execute("usp_ChucVuDelete", dynamicParameters);
         }
 
-        public async Task<IEnumerable<Hopdong>> getAll()
+        public async Task<IEnumerable<Chucvu>> getAll()
         {
-            return await Query("usp_HopDongGetAll");
+            return await Query("usp_ChucVuGetAll");
         }
 
-        public async Task<Hopdong> getById(int? id)
+        public async Task<Chucvu> getById(int? id)
         {
             var dynamicParameters = new DynamicParameters();
 
             dynamicParameters.Add("@id", id);
 
-            return await QueryFirstOrDefault("usp_HopDongGet", dynamicParameters);
+            return await QueryFirstOrDefault("usp_ChucVuGet", dynamicParameters);
         }
 
-        public async Task Update(Hopdong entity)
+        public async Task Update(Chucvu entity)
         {
             var dynamicParameters = new DynamicParameters();
             dynamicParameters.Add("@id", entity.Id);
-            dynamicParameters.Add("@sohopdong", entity.Sohopdong);
             dynamicParameters.Add("@ten", entity.Ten);
-            dynamicParameters.Add("@noidung", entity.Noidung);
-            dynamicParameters.Add("@ngaylap", entity.Ngaylap);
+            dynamicParameters.Add("@phucap", entity.Phucap);
+            dynamicParameters.Add("@mota", entity.Mota);
             dynamicParameters.Add("@dateedit", DateTime.Now);
             dynamicParameters.Add("@useredit", 1);
 
-            await Execute("usp_HopDongUpdate", dynamicParameters);
+            await Execute("usp_ChucVuUpdate", dynamicParameters);
         }
     }
 }
