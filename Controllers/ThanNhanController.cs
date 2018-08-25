@@ -13,7 +13,7 @@ namespace QLNS.Controllers
     [Route("api/ThanNhan")]
     public class ThanNhanController : Controller
     {
-        private IThanNhanRepository _context;
+        private readonly IThanNhanRepository _context;
 
         public ThanNhanController(IThanNhanRepository context)
         {

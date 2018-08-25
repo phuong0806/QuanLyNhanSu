@@ -13,7 +13,7 @@ namespace QLNS.Controllers
     [Route("api/LoaiDaoTao")]
     public class LoaiDaoTaoController : Controller
     {
-        private ILoaiDaoTaoRepository _context;
+        private readonly ILoaiDaoTaoRepository _context;
 
         public LoaiDaoTaoController(ILoaiDaoTaoRepository context)
         {

@@ -10,7 +10,7 @@ namespace QLNS.Controllers
     [Route("api/HopDong")]
     public class HopDongController : Controller
     {
-        private IHopDongRepository _context;
+        private readonly IHopDongRepository _context;
 
         public HopDongController(IHopDongRepository context)
         {

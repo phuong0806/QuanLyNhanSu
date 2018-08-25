@@ -13,7 +13,7 @@ namespace QLNS.Controllers
     [Route("api/DaoTaoChuyenNganh")]
     public class DaoTaoChuyenNganhController : Controller
     {
-        private IDaoTaoChuyenNganhRepository _context;
+        private readonly IDaoTaoChuyenNganhRepository _context;
 
         public DaoTaoChuyenNganhController(IDaoTaoChuyenNganhRepository context)
         {

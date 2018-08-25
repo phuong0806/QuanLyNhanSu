@@ -14,7 +14,7 @@ namespace QLNS.Controllers
     [Route("api/TaiKhoan")]
     public class TaiKhoanController : Controller
     {
-        private ITaiKhoanRepository _context;
+        private readonly ITaiKhoanRepository _context;
 
         public TaiKhoanController(ITaiKhoanRepository context)
         {

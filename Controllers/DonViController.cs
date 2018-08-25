@@ -13,7 +13,7 @@ namespace QLNS.Controllers
     [Route("api/DonVi")]
     public class DonViController : Controller
     {
-        private IDonViRepository _context;
+        private readonly IDonViRepository _context;
 
         public DonViController(IDonViRepository context)
         {

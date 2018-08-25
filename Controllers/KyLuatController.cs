@@ -12,7 +12,7 @@ namespace QLNS.Controllers
     [Route("api/KyLuat")]
     public class KyLuatController : Controller
     {
-        private IKyLuatRepository _context;
+        private readonly IKyLuatRepository _context;
 
         public KyLuatController(IKyLuatRepository context)
         {

@@ -13,7 +13,7 @@ namespace QLNS.Controllers
     [Route("api/PhongBan")]
     public class PhongBanController : Controller
     {
-        private IPhongBanRepository _context;
+        private readonly IPhongBanRepository _context;
 
         public PhongBanController(IPhongBanRepository context)
         {
