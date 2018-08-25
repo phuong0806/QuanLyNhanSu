@@ -13,17 +13,17 @@ namespace QLNS.Controllers
     [Route("api/ThanNhan")]
     public class ThanNhanController : Controller
     {
-        private IThanNhanRepository thanNhanRepository;
+        private IThanNhanRepository _context;
 
-        public ThanNhanController(IThanNhanRepository thanNhanRepository)
+        public ThanNhanController(IThanNhanRepository context)
         {
-            this.thanNhanRepository = thanNhanRepository;
+            _context = context;
         }
 
         [HttpGet]
         public async Task<IEnumerable<Thannhan>> getAll()
         {
-            var list = await thanNhanRepository.getAll();
+            var list = await _context.getAll();
             return list;
         }
 
@@ -31,7 +31,7 @@ namespace QLNS.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int? id)
         {
-            var model = await thanNhanRepository.getById(id);
+            var model = await _context.getById(id);
 
             if (model == null)
             {
@@ -49,7 +49,7 @@ namespace QLNS.Controllers
                 return BadRequest();
             }
 
-            await thanNhanRepository.Create(model);
+            await _context.Create(model);
 
             return Ok(model);
         }
@@ -64,7 +64,7 @@ namespace QLNS.Controllers
 
             model.Id = id;
 
-            await thanNhanRepository.Update(model);
+            await _context.Update(model);
 
             return Ok(model);
 
@@ -78,7 +78,7 @@ namespace QLNS.Controllers
                 return NotFound();
             }
 
-            await thanNhanRepository.Delete(id);
+            await _context.Delete(id);
 
             return new NoContentResult();
         }

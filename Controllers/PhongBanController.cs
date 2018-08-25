@@ -13,17 +13,17 @@ namespace QLNS.Controllers
     [Route("api/PhongBan")]
     public class PhongBanController : Controller
     {
-        private IPhongBanRepository phongBanRepository;
+        private IPhongBanRepository _context;
 
-        public PhongBanController(IPhongBanRepository phongBanRepository)
+        public PhongBanController(IPhongBanRepository context)
         {
-            this.phongBanRepository = phongBanRepository;
+            _context = context;
         }
 
         [HttpGet]
         public async Task<IEnumerable<Phongban>> getAll()
         {
-            var list = await phongBanRepository.getAll();
+            var list = await _context.getAll();
             return list;
         }
 
@@ -31,7 +31,7 @@ namespace QLNS.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int? id)
         {
-            var model = await phongBanRepository.getById(id);
+            var model = await _context.getById(id);
 
             if (model == null)
             {
@@ -49,7 +49,7 @@ namespace QLNS.Controllers
                 return BadRequest();
             }
 
-            await phongBanRepository.Create(model);
+            await _context.Create(model);
 
             return Ok(model);
         }
@@ -64,7 +64,7 @@ namespace QLNS.Controllers
 
             model.Id = id;
 
-            await phongBanRepository.Update(model);
+            await _context.Update(model);
 
             return Ok(model);
 
@@ -78,7 +78,7 @@ namespace QLNS.Controllers
                 return NotFound();
             }
 
-            await phongBanRepository.Delete(id);
+            await _context.Delete(id);
 
             return new NoContentResult();
         }

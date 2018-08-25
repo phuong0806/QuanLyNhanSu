@@ -13,18 +13,17 @@ namespace QLNS.Controllers
     [Route("api/ChucVu")]
     public class ChucVuController : Controller
     {
-        private IChucVuRepository chucVuRepository;
+        private readonly IChucVuRepository _context;
 
-        public ChucVuController(IChucVuRepository chucVuRepository)
+        public ChucVuController(IChucVuRepository context)
         {
-            this.chucVuRepository = chucVuRepository;
+            _context = context;
         }
 
-        // GET: HopDong
         [HttpGet]
         public async Task<IEnumerable<Chucvu>> getAll()
         {
-            var list = await chucVuRepository.getAll();
+            var list = await _context.getAll();
             return list;
         }
 
@@ -32,7 +31,7 @@ namespace QLNS.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int? id)
         {
-            var model = await chucVuRepository.getById(id);
+            var model = await _context.getById(id);
 
             if (model == null)
             {
@@ -50,7 +49,7 @@ namespace QLNS.Controllers
                 return BadRequest();
             }
 
-            await chucVuRepository.Create(model);
+            await _context.Create(model);
 
             return Ok(model);
         }
@@ -65,7 +64,7 @@ namespace QLNS.Controllers
 
             model.Id = id;
 
-            await chucVuRepository.Update(model);
+            await _context.Update(model);
 
             return Ok(model);
 
@@ -79,7 +78,7 @@ namespace QLNS.Controllers
                 return NotFound();
             }
 
-            await chucVuRepository.Delete(id);
+            await _context.Delete(id);
 
             return new NoContentResult();
         }

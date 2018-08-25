@@ -12,18 +12,17 @@ namespace QLNS.Controllers
     [Route("api/KyLuat")]
     public class KyLuatController : Controller
     {
-        private IKyLuatRepository kyLuatRepository;
+        private IKyLuatRepository _context;
 
-        public KyLuatController(IKyLuatRepository kyLuatRepository)
+        public KyLuatController(IKyLuatRepository context)
         {
-            this.kyLuatRepository = kyLuatRepository;
+            _context = context;
         }
 
-        // GET: HopDong
         [HttpGet]
         public async Task<IEnumerable<Kyluat>> getAll()
         {
-            var list = await kyLuatRepository.getAll();
+            var list = await _context.getAll();
             return list;
         }
 
@@ -31,7 +30,7 @@ namespace QLNS.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int? id)
         {
-            var model = await kyLuatRepository.getById(id);
+            var model = await _context.getById(id);
 
             if (model == null)
             {
@@ -49,7 +48,7 @@ namespace QLNS.Controllers
                 return BadRequest();
             }
 
-            await kyLuatRepository.Create(model);
+            await _context.Create(model);
 
             return Ok(model);
         }
@@ -64,7 +63,7 @@ namespace QLNS.Controllers
 
             model.Id = id;
 
-            await kyLuatRepository.Update(model);
+            await _context.Update(model);
 
             return Ok(model);
 
@@ -78,7 +77,7 @@ namespace QLNS.Controllers
                 return NotFound();
             }
 
-            await kyLuatRepository.Delete(id);
+            await _context.Delete(id);
 
             return new NoContentResult();
         }

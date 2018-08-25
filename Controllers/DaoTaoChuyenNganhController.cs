@@ -13,18 +13,17 @@ namespace QLNS.Controllers
     [Route("api/DaoTaoChuyenNganh")]
     public class DaoTaoChuyenNganhController : Controller
     {
-        private IDaoTaoChuyenNganhRepository daoTaoChuyenNganhRepository;
+        private IDaoTaoChuyenNganhRepository _context;
 
-        public DaoTaoChuyenNganhController(IDaoTaoChuyenNganhRepository daoTaoChuyenNganhRepository)
+        public DaoTaoChuyenNganhController(IDaoTaoChuyenNganhRepository context)
         {
-            this.daoTaoChuyenNganhRepository = daoTaoChuyenNganhRepository;
+            _context = context;
         }
 
-        // GET: HopDong
         [HttpGet]
         public async Task<IEnumerable<Daotaochuyennganh>> getAll()
         {
-            var list = await daoTaoChuyenNganhRepository.getAll();
+            var list = await _context.getAll();
             return list;
         }
 
@@ -32,7 +31,7 @@ namespace QLNS.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int? id)
         {
-            var model = await daoTaoChuyenNganhRepository.getById(id);
+            var model = await _context.getById(id);
 
             if (model == null)
             {
@@ -50,7 +49,7 @@ namespace QLNS.Controllers
                 return BadRequest();
             }
 
-            await daoTaoChuyenNganhRepository.Create(model);
+            await _context.Create(model);
 
             return Ok(model);
         }
@@ -65,7 +64,7 @@ namespace QLNS.Controllers
 
             model.Id = id;
 
-            await daoTaoChuyenNganhRepository.Update(model);
+            await _context.Update(model);
 
             return Ok(model);
 
@@ -79,7 +78,7 @@ namespace QLNS.Controllers
                 return NotFound();
             }
 
-            await daoTaoChuyenNganhRepository.Delete(id);
+            await _context.Delete(id);
 
             return new NoContentResult();
         }

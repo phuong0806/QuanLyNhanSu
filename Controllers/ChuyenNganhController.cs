@@ -13,18 +13,17 @@ namespace QLNS.Controllers
     [Route("api/ChuyenNganh")]
     public class ChuyenNganhController : Controller
     {
-        private IChuyenNganhRepository chuyenNganhRepository;
+        private IChuyenNganhRepository _context;
 
-        public ChuyenNganhController(IChuyenNganhRepository chuyenNganhRepository)
+        public ChuyenNganhController(IChuyenNganhRepository context)
         {
-            this.chuyenNganhRepository = chuyenNganhRepository;
+            _context = context;
         }
 
-        // GET: HopDong
         [HttpGet]
         public async Task<IEnumerable<Chuyennganh>> getAll()
         {
-            var list = await chuyenNganhRepository.getAll();
+            var list = await _context.getAll();
             return list;
         }
 
@@ -32,7 +31,7 @@ namespace QLNS.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int? id)
         {
-            var model = await chuyenNganhRepository.getById(id);
+            var model = await _context.getById(id);
 
             if (model == null)
             {
@@ -50,7 +49,7 @@ namespace QLNS.Controllers
                 return BadRequest();
             }
 
-            await chuyenNganhRepository.Create(model);
+            await _context.Create(model);
 
             return Ok(model);
         }
@@ -65,7 +64,7 @@ namespace QLNS.Controllers
 
             model.Id = id;
 
-            await chuyenNganhRepository.Update(model);
+            await _context.Update(model);
 
             return Ok(model);
 
@@ -79,7 +78,7 @@ namespace QLNS.Controllers
                 return NotFound();
             }
 
-            await chuyenNganhRepository.Delete(id);
+            await _context.Delete(id);
 
             return new NoContentResult();
         }

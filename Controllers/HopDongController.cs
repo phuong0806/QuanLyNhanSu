@@ -10,18 +10,17 @@ namespace QLNS.Controllers
     [Route("api/HopDong")]
     public class HopDongController : Controller
     {
-        private IHopDongRepository hopDongRepository;
+        private IHopDongRepository _context;
 
-        public HopDongController(IHopDongRepository hopDongRepository)
+        public HopDongController(IHopDongRepository context)
         {
-            this.hopDongRepository = hopDongRepository;
+            _context = context;
         }
 
-        // GET: HopDong
         [HttpGet]
         public async Task<IEnumerable<Hopdong>> getAll()
         {
-            var DanhSachHopDong = await hopDongRepository.getAll();
+            var DanhSachHopDong = await _context.getAll();
             return DanhSachHopDong;
         }
 
@@ -29,7 +28,7 @@ namespace QLNS.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int? id)
         {
-            var model = await hopDongRepository.getById(id);
+            var model = await _context.getById(id);
 
             if (model == null)
             {
@@ -47,7 +46,7 @@ namespace QLNS.Controllers
                 return BadRequest();
             }
 
-            await hopDongRepository.Create(model);
+            await _context.Create(model);
 
             return Ok(model); 
         }
@@ -62,7 +61,7 @@ namespace QLNS.Controllers
 
             model.Id = id;
 
-            await hopDongRepository.Update(model);
+            await _context.Update(model);
 
             return Ok(model);
 
@@ -76,7 +75,7 @@ namespace QLNS.Controllers
                 return NotFound(); 
             }
 
-            await hopDongRepository.Delete(id);
+            await _context.Delete(id);
 
             return new NoContentResult(); 
         }

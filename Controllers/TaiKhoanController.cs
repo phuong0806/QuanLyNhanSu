@@ -14,22 +14,17 @@ namespace QLNS.Controllers
     [Route("api/TaiKhoan")]
     public class TaiKhoanController : Controller
     {
-        private ITaiKhoanRepository taiKhoanRepository;
+        private ITaiKhoanRepository _context;
 
-        public TaiKhoanController(ITaiKhoanRepository taiKhoanRepository)
+        public TaiKhoanController(ITaiKhoanRepository context)
         {
-            this.taiKhoanRepository = taiKhoanRepository;
-        }
-
-        public async Task<IActionResult> Index()
-        {
-            return View();
+            _context = context;
         }
 
         [HttpPut]
         public async Task<int> Login([FromBody]LoginModel loginModel)
         {
-            var user = await taiKhoanRepository.getUser(loginModel.username, loginModel.password);
+            var user = await _context.getUser(loginModel.username, loginModel.password);
 
             return (checkUserLogin(user));
         }

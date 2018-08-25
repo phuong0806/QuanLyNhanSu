@@ -13,17 +13,17 @@ namespace QLNS.Controllers
     [Route("api/LoaiDaoTao")]
     public class LoaiDaoTaoController : Controller
     {
-        private ILoaiDaoTaoRepository loaiDaoTaoRepository;
+        private ILoaiDaoTaoRepository _context;
 
-        public LoaiDaoTaoController(ILoaiDaoTaoRepository loaiDaoTaoRepository)
+        public LoaiDaoTaoController(ILoaiDaoTaoRepository context)
         {
-            this.loaiDaoTaoRepository = loaiDaoTaoRepository;
+            _context = context;
         }
 
         [HttpGet]
         public async Task<IEnumerable<LoaiDaotao>> getAll()
         {
-            var list = await loaiDaoTaoRepository.getAll();
+            var list = await _context.getAll();
             return list;
         }
 
@@ -31,7 +31,7 @@ namespace QLNS.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int? id)
         {
-            var model = await loaiDaoTaoRepository.getById(id);
+            var model = await _context.getById(id);
 
             if (model == null)
             {
@@ -49,7 +49,7 @@ namespace QLNS.Controllers
                 return BadRequest();
             }
 
-            await loaiDaoTaoRepository.Create(model);
+            await _context.Create(model);
 
             return Ok(model);
         }
@@ -64,7 +64,7 @@ namespace QLNS.Controllers
 
             model.Id = id;
 
-            await loaiDaoTaoRepository.Update(model);
+            await _context.Update(model);
 
             return Ok(model);
 
@@ -78,7 +78,7 @@ namespace QLNS.Controllers
                 return NotFound();
             }
 
-            await loaiDaoTaoRepository.Delete(id);
+            await _context.Delete(id);
 
             return new NoContentResult();
         }

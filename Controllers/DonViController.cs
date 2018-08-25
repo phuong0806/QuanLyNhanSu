@@ -13,18 +13,17 @@ namespace QLNS.Controllers
     [Route("api/DonVi")]
     public class DonViController : Controller
     {
-        private IDonViRepository donViRepository;
+        private IDonViRepository _context;
 
-        public DonViController(IDonViRepository donViRepository)
+        public DonViController(IDonViRepository context)
         {
-            this.donViRepository = donViRepository;
+            _context = context;
         }
 
-        // GET: HopDong
         [HttpGet]
         public async Task<IEnumerable<Donvi>> getAll()
         {
-            var list = await donViRepository.getAll();
+            var list = await _context.getAll();
             return list;
         }
 
@@ -32,7 +31,7 @@ namespace QLNS.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int? id)
         {
-            var model = await donViRepository.getById(id);
+            var model = await _context.getById(id);
 
             if (model == null)
             {
@@ -50,7 +49,7 @@ namespace QLNS.Controllers
                 return BadRequest();
             }
 
-            await donViRepository.Create(model);
+            await _context.Create(model);
 
             return Ok(model);
         }
@@ -65,7 +64,7 @@ namespace QLNS.Controllers
 
             model.Id = id;
 
-            await donViRepository.Update(model);
+            await _context.Update(model);
 
             return Ok(model);
 
@@ -79,7 +78,7 @@ namespace QLNS.Controllers
                 return NotFound();
             }
 
-            await donViRepository.Delete(id);
+            await _context.Delete(id);
 
             return new NoContentResult();
         }

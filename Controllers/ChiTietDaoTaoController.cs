@@ -13,18 +13,17 @@ namespace QLNS.Controllers
     [Route("api/ChiTietDaoTao")]
     public class ChiTietDaoTaoController : Controller
     {
-        private IChiTietDaoTapRepository chiTietDaoTaoRepository;
+        private readonly IChiTietDaoTapRepository _context;
 
-        public ChiTietDaoTaoController(IChiTietDaoTapRepository chiTietDaoTaoRepository)
+        public ChiTietDaoTaoController(IChiTietDaoTapRepository context)
         {
-            this.chiTietDaoTaoRepository = chiTietDaoTaoRepository;
+            _context = context;
         }
 
-        // GET: HopDong
         [HttpGet]
         public async Task<IEnumerable<ChitietDaotao>> getAll()
         {
-            var list = await chiTietDaoTaoRepository.getAll();
+            var list = await _context.getAll();
             return list;
         }
 
@@ -32,7 +31,7 @@ namespace QLNS.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int? id)
         {
-            var model = await chiTietDaoTaoRepository.getById(id);
+            var model = await _context.getById(id);
 
             if (model == null)
             {
@@ -50,7 +49,7 @@ namespace QLNS.Controllers
                 return BadRequest();
             }
 
-            await chiTietDaoTaoRepository.Create(model);
+            await _context.Create(model);
 
             return Ok(model);
         }
@@ -65,7 +64,7 @@ namespace QLNS.Controllers
 
             model.Id = id;
 
-            await chiTietDaoTaoRepository.Update(model);
+            await _context.Update(model);
 
             return Ok(model);
 
@@ -79,7 +78,7 @@ namespace QLNS.Controllers
                 return NotFound();
             }
 
-            await chiTietDaoTaoRepository.Delete(id);
+            await _context.Delete(id);
 
             return new NoContentResult();
         }
