@@ -6,7 +6,7 @@ namespace QLNS.Model
     public partial class Kyhopdong
     {
         public long Id { get; set; }
-        public string Sohopdong { get; set; }
+        
         public string Trangthai { get; set; }
         public DateTime? NgayKy { get; set; }
         public string Thoihan { get; set; }
